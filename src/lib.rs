@@ -174,6 +174,7 @@ fn render_message(mut w: impl Write, msg: &Message, dbc: &DBC) -> Result<()> {
             .filter(|sig| signal_to_rust_type(sig) != "bool")
         {
             let typ = signal_to_rust_type(signal);
+            writeln!(&mut w, "#[cfg(feature = \"range_checked\")]");
             writeln!(
                 &mut w,
                 "pub const {sig}_MIN: {typ} = {min}_{typ};",
@@ -182,6 +183,7 @@ fn render_message(mut w: impl Write, msg: &Message, dbc: &DBC) -> Result<()> {
                 min = signal.min,
             )?;
 
+            writeln!(&mut w, "#[cfg(feature = \"range_checked\")]");
             writeln!(
                 &mut w,
                 "pub const {sig}_MAX: {typ} = {max}_{typ};",
