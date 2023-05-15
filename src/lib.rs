@@ -483,10 +483,8 @@ fn render_set_signal(mut w: impl Write, signal: &Signal, msg: &Message) -> Resul
             writeln!(w, r##"#[cfg(feature = "range_checked")]"##)?;
             writeln!(
                 w,
-                r##"if value < {min}_{typ} || {max}_{typ} < value {{"##,
-                typ = signal_to_rust_type(signal),
-                min = signal.min(),
-                max = signal.max(),
+                r##"if value < Self::{sig}_MIN || Self::{sig}_MAX < value {{"##,
+                sig = field_name(signal.name()).to_uppercase(),
             )?;
             {
                 let mut w = PadAdapter::wrap(&mut w);
